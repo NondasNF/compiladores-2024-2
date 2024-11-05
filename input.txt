@@ -1,0 +1,4 @@
+dinheiro = 1
+realizacao = 2
+cansaco = 1
+tristeza = dinheiro + cansaco - realizacao
