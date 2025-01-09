@@ -17,6 +17,16 @@ public interface LPMSListener extends ParseTreeListener {
 	 */
 	void exitProgram(LPMSParser.ProgramContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link LPMSParser#block}.
+	 * @param ctx the parse tree
+	 */
+	void enterBlock(LPMSParser.BlockContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link LPMSParser#block}.
+	 * @param ctx the parse tree
+	 */
+	void exitBlock(LPMSParser.BlockContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link LPMSParser#stmt}.
 	 * @param ctx the parse tree
 	 */
@@ -97,6 +107,66 @@ public interface LPMSListener extends ParseTreeListener {
 	 */
 	void exitWhileStmt(LPMSParser.WhileStmtContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link LPMSParser#functionDecl}.
+	 * @param ctx the parse tree
+	 */
+	void enterFunctionDecl(LPMSParser.FunctionDeclContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link LPMSParser#functionDecl}.
+	 * @param ctx the parse tree
+	 */
+	void exitFunctionDecl(LPMSParser.FunctionDeclContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link LPMSParser#parameters}.
+	 * @param ctx the parse tree
+	 */
+	void enterParameters(LPMSParser.ParametersContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link LPMSParser#parameters}.
+	 * @param ctx the parse tree
+	 */
+	void exitParameters(LPMSParser.ParametersContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link LPMSParser#parameter}.
+	 * @param ctx the parse tree
+	 */
+	void enterParameter(LPMSParser.ParameterContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link LPMSParser#parameter}.
+	 * @param ctx the parse tree
+	 */
+	void exitParameter(LPMSParser.ParameterContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link LPMSParser#functionCall}.
+	 * @param ctx the parse tree
+	 */
+	void enterFunctionCall(LPMSParser.FunctionCallContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link LPMSParser#functionCall}.
+	 * @param ctx the parse tree
+	 */
+	void exitFunctionCall(LPMSParser.FunctionCallContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link LPMSParser#arguments}.
+	 * @param ctx the parse tree
+	 */
+	void enterArguments(LPMSParser.ArgumentsContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link LPMSParser#arguments}.
+	 * @param ctx the parse tree
+	 */
+	void exitArguments(LPMSParser.ArgumentsContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link LPMSParser#returnStmt}.
+	 * @param ctx the parse tree
+	 */
+	void enterReturnStmt(LPMSParser.ReturnStmtContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link LPMSParser#returnStmt}.
+	 * @param ctx the parse tree
+	 */
+	void exitReturnStmt(LPMSParser.ReturnStmtContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link LPMSParser#expression}.
 	 * @param ctx the parse tree
 	 */
@@ -126,14 +196,4 @@ public interface LPMSListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitFactor(LPMSParser.FactorContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link LPMSParser#comparison}.
-	 * @param ctx the parse tree
-	 */
-	void enterComparison(LPMSParser.ComparisonContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link LPMSParser#comparison}.
-	 * @param ctx the parse tree
-	 */
-	void exitComparison(LPMSParser.ComparisonContext ctx);
 }

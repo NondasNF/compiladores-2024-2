@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="a12c31e8-d0d5-4f5d-80ff-a904135e8a2c" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../LPMSVisitor.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SemanticAnalyzer.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LPMS.g4" beforeDir="false" afterPath="$PROJECT_DIR$/../LPMS.g4" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LPMS.interp" beforeDir="false" afterPath="$PROJECT_DIR$/../LPMS.interp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LPMSBaseListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/../LPMSBaseListener.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LPMSBaseVisitor.java" beforeDir="false" afterPath="$PROJECT_DIR$/../LPMSBaseVisitor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LPMSListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/../LPMSListener.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LPMSListener.py" beforeDir="false" afterPath="$PROJECT_DIR$/../LPMSListener.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LPMSParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/../LPMSParser.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LPMSParser.py" beforeDir="false" afterPath="$PROJECT_DIR$/../LPMSParser.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LPMSVisitor.java" beforeDir="false" afterPath="$PROJECT_DIR$/../LPMSVisitor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../input.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../input.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../main.py" beforeDir="false" afterPath="$PROJECT_DIR$/../main.py" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 2
+}</component>
+  <component name="ProjectId" id="2rPYHoTWa28jX6Vsm1NCrSexHhw" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;Cherry-picking in t5&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/nonda/Downloads/TrabalhoCompiladorCompleto/Compiladores-2024-2&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  }
+}</component>
+  <component name="RunManager">
+    <configuration name="main" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
+      <module name="LPMS-Compiler" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/main.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="a12c31e8-d0d5-4f5d-80ff-a904135e8a2c" name="Changes" comment="" />
+      <created>1736462091789</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1736462091789</updated>
+      <workItem from="1736462092815" duration="740000" />
+      <workItem from="1736999407334" duration="66000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>

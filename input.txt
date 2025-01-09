@@ -1,11 +1,4 @@
-Program Example {
-    int x, y;
-    const z = 42;
-    x = y + 2;
-    print(x, z);
-    if (x > 10) {
-        y = x * 3;
-    } else {
-        y = x - 1;
-    }
+Program Teste {
+    int a = 10;
+    int A = 19;
 }

@@ -12,6 +12,7 @@ INT_TYPE : 'int';
 FLOAT_TYPE : 'float';
 BOOL_TYPE : 'bool';
 CHAR_TYPE : 'str';
+RETURN : 'return';
 TRUE : 'true';
 FALSE : 'false';
 BREAK : 'break';
@@ -46,21 +47,29 @@ COMMENT : '//' ~[\r\n]* -> skip;
 
 // Regras Sintáticas
 program
-    : PROGRAM IDENTIFIER LBRACE stmt* RBRACE EOF
+    : PROGRAM IDENTIFIER LBRACE block RBRACE EOF
+    ;
+
+block
+    : stmt*
     ;
 
 stmt
     : declaration
-    | assignment
     | constDeclaration
+    | assignment
     | inputStmt
     | printStmt
     | ifStmt
     | whileStmt
+    | functionDecl
+    | functionCall SEMICOLON
+    | returnStmt
+    | BREAK SEMICOLON
     ;
 
 declaration
-    : (INT_TYPE | FLOAT_TYPE | BOOL_TYPE | CHAR_TYPE) IDENTIFIER (COMMA IDENTIFIER)* SEMICOLON
+    : (INT_TYPE | FLOAT_TYPE | BOOL_TYPE | CHAR_TYPE) IDENTIFIER (ASSIGN expression)? (COMMA IDENTIFIER (ASSIGN expression)?)* SEMICOLON
     ;
 
 constDeclaration
@@ -80,15 +89,39 @@ printStmt
     ;
 
 ifStmt
-    : 'if' '(' expression ')' '{' stmt* '}' ('else' '{' stmt* '}')?
+    : IF LPAREN expression RPAREN LBRACE block RBRACE (ELSE LBRACE block RBRACE)?
     ;
 
 whileStmt
-    : WHILE LPAREN expression RPAREN LBRACE stmt* (BREAK SEMICOLON)? stmt* RBRACE
+    : WHILE LPAREN expression RPAREN LBRACE block RBRACE
+    ;
+
+functionDecl
+    : (INT_TYPE | FLOAT_TYPE | BOOL_TYPE | CHAR_TYPE) IDENTIFIER LPAREN parameters? RPAREN LBRACE block returnStmt? RBRACE
+    ;
+
+parameters
+    : parameter (COMMA parameter)*
+    ;
+
+parameter
+    : (INT_TYPE | FLOAT_TYPE | BOOL_TYPE | CHAR_TYPE) IDENTIFIER
+    ;
+
+functionCall
+    : IDENTIFIER LPAREN arguments? RPAREN
+    ;
+
+arguments
+    : expression (COMMA expression)*
+    ;
+
+returnStmt
+    : RETURN expression SEMICOLON
     ;
 
 expression
-    : term (( '+' | '-' | '>' | '<' | '>=' | '<=' | '==' | '!=' ) term)*
+    : term ((ADD | SUB | GT | LT | GE | LE | EQ | NEQ) term)*
     ;
 
 term
@@ -97,6 +130,7 @@ term
 
 factor
     : IDENTIFIER
+    | functionCall
     | NUMBER
     | CHAR_LITERAL
     | STRING_LITERAL
@@ -105,9 +139,5 @@ factor
     | LPAREN expression RPAREN
     | NOT factor
     | SUB factor
-    ;
-
-comparison
-    : expression (EQ | NEQ | GE | LE | GT | LT) expression
     ;
 

@@ -16,6 +16,12 @@ public interface LPMSVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitProgram(LPMSParser.ProgramContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link LPMSParser#block}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitBlock(LPMSParser.BlockContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link LPMSParser#stmt}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -64,6 +70,42 @@ public interface LPMSVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitWhileStmt(LPMSParser.WhileStmtContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link LPMSParser#functionDecl}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitFunctionDecl(LPMSParser.FunctionDeclContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link LPMSParser#parameters}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitParameters(LPMSParser.ParametersContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link LPMSParser#parameter}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitParameter(LPMSParser.ParameterContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link LPMSParser#functionCall}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitFunctionCall(LPMSParser.FunctionCallContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link LPMSParser#arguments}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitArguments(LPMSParser.ArgumentsContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link LPMSParser#returnStmt}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitReturnStmt(LPMSParser.ReturnStmtContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link LPMSParser#expression}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -81,10 +123,4 @@ public interface LPMSVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitFactor(LPMSParser.FactorContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link LPMSParser#comparison}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitComparison(LPMSParser.ComparisonContext ctx);
 }

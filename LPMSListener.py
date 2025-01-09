@@ -17,6 +17,15 @@ class LPMSListener(ParseTreeListener):
         pass
 
 
+    # Enter a parse tree produced by LPMSParser#block.
+    def enterBlock(self, ctx:LPMSParser.BlockContext):
+        pass
+
+    # Exit a parse tree produced by LPMSParser#block.
+    def exitBlock(self, ctx:LPMSParser.BlockContext):
+        pass
+
+
     # Enter a parse tree produced by LPMSParser#stmt.
     def enterStmt(self, ctx:LPMSParser.StmtContext):
         pass
@@ -89,6 +98,60 @@ class LPMSListener(ParseTreeListener):
         pass
 
 
+    # Enter a parse tree produced by LPMSParser#functionDecl.
+    def enterFunctionDecl(self, ctx:LPMSParser.FunctionDeclContext):
+        pass
+
+    # Exit a parse tree produced by LPMSParser#functionDecl.
+    def exitFunctionDecl(self, ctx:LPMSParser.FunctionDeclContext):
+        pass
+
+
+    # Enter a parse tree produced by LPMSParser#parameters.
+    def enterParameters(self, ctx:LPMSParser.ParametersContext):
+        pass
+
+    # Exit a parse tree produced by LPMSParser#parameters.
+    def exitParameters(self, ctx:LPMSParser.ParametersContext):
+        pass
+
+
+    # Enter a parse tree produced by LPMSParser#parameter.
+    def enterParameter(self, ctx:LPMSParser.ParameterContext):
+        pass
+
+    # Exit a parse tree produced by LPMSParser#parameter.
+    def exitParameter(self, ctx:LPMSParser.ParameterContext):
+        pass
+
+
+    # Enter a parse tree produced by LPMSParser#functionCall.
+    def enterFunctionCall(self, ctx:LPMSParser.FunctionCallContext):
+        pass
+
+    # Exit a parse tree produced by LPMSParser#functionCall.
+    def exitFunctionCall(self, ctx:LPMSParser.FunctionCallContext):
+        pass
+
+
+    # Enter a parse tree produced by LPMSParser#arguments.
+    def enterArguments(self, ctx:LPMSParser.ArgumentsContext):
+        pass
+
+    # Exit a parse tree produced by LPMSParser#arguments.
+    def exitArguments(self, ctx:LPMSParser.ArgumentsContext):
+        pass
+
+
+    # Enter a parse tree produced by LPMSParser#returnStmt.
+    def enterReturnStmt(self, ctx:LPMSParser.ReturnStmtContext):
+        pass
+
+    # Exit a parse tree produced by LPMSParser#returnStmt.
+    def exitReturnStmt(self, ctx:LPMSParser.ReturnStmtContext):
+        pass
+
+
     # Enter a parse tree produced by LPMSParser#expression.
     def enterExpression(self, ctx:LPMSParser.ExpressionContext):
         pass
@@ -113,15 +176,6 @@ class LPMSListener(ParseTreeListener):
 
     # Exit a parse tree produced by LPMSParser#factor.
     def exitFactor(self, ctx:LPMSParser.FactorContext):
-        pass
-
-
-    # Enter a parse tree produced by LPMSParser#comparison.
-    def enterComparison(self, ctx:LPMSParser.ComparisonContext):
-        pass
-
-    # Exit a parse tree produced by LPMSParser#comparison.
-    def exitComparison(self, ctx:LPMSParser.ComparisonContext):
         pass
 
 
