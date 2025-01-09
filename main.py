@@ -1,23 +1,19 @@
 import sys
 from antlr4 import FileStream, CommonTokenStream
-from CalculadoraLexer import CalculadoraLexer
-from CalculadoraParser import CalculadoraParser
+from LPMSLexer import LPMSLexer
 
-def main():
-    # Carrega o arquivo de entrada
-    input_file = "input.txt"
-    input_stream = FileStream(input_file)
 
-    # Passa pelo lexer
-    lexer = CalculadoraLexer(input_stream)
-    token_stream = CommonTokenStream(lexer)
+def test_lexer(input_code):
+    # Lê o código de entrada
+    input_stream = FileStream(input_code)
+    # Cria o Lexer
+    lexer = LPMSLexer(input_stream)
+    # Itera sobre os tokens gerados
+    tokens = lexer.getAllTokens()
 
-    # Passa pelo parser
-    parser = CalculadoraParser(token_stream)
-    tree = parser.programa()  # Inicia o parsing a partir da regra 'programa'
+    for token in tokens:
+        print(f"Token: {token.text} | Type: {lexer.symbolicNames[token.type]}")
 
-    print("Parsing concluído. A árvore sintática foi construída.")
-    print(tree.toStringTree(recog=parser))  # Imprime a árvore sintática
 
 if __name__ == "__main__":
-    main()
+    test_lexer("input.txt")

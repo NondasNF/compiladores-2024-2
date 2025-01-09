@@ -1,4 +1,11 @@
-dinheiro = 1
-realizacao = 2
-cansaco = 1
-tristeza = dinheiro + cansaco - realizacao
+Program Example {
+    int x, y;
+    const z = 42;
+    x = y + 2;
+    print(x, z);
+    if (x > 10) {
+        y = x * 3;
+    } else {
+        y = x - 1;
+    }
+}
