@@ -1,5 +1,5 @@
 Program Teste {
-    int x;
-    x = 5;
+    str x;
+    x = "a";
 }
 
