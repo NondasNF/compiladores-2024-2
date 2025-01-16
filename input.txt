@@ -1,4 +1,5 @@
 Program Teste {
-    int a = 10;
-    int A = 19;
+    int x;
+    x = 5;
 }
+
