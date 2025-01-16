@@ -2,39 +2,22 @@ import sys
 from antlr4 import *
 from LPMSLexer import LPMSLexer
 from LPMSParser import LPMSParser
-from LPMSListener import LPMSListener
 from SemanticAnalyzer import SemanticAnalyzer
-from antlr4.tree.Tree import ParseTreeWalker
 
 
-class ASTPrinter(LPMSListener):
-    def enterProgram(self, ctx):
-        print(f"Entering program: {ctx.getText()}")
+def format_ast(node, parser):
+    """ Formata a AST de maneira detalhada com operandos e operadores. """
+    if node is None:
+        return ""
 
-    def exitProgram(self, ctx):
-        print(f"Exiting program: {ctx.getText()}")
+    indent = " "
+    if isinstance(node, TerminalNode):
+        return f"{indent}{parser.symbolicNames[node.getSymbol().type]}: {node.getText()}"
 
-    def enterEveryRule(self, ctx):
-        rule_name = LPMSParser.ruleNames[ctx.getRuleIndex()]
+    rule_name = parser.ruleNames[node.getRuleIndex()]
+    formatted_children = ",".join([format_ast(child, parser) for child in node.children])
+    return f"{indent}{rule_name}:{formatted_children}"
 
-        # Ignorar o "program" porque já tratamos separadamente
-        if rule_name == "program":
-            return
-
-        # Formatar texto para melhorar legibilidade
-        formatted_text = " ".join(ctx.getText().replace("{", " { ").replace("}", " } ").split())
-
-        print(f"Entering {rule_name}: {formatted_text}")
-
-    def exitEveryRule(self, ctx):
-        rule_name = LPMSParser.ruleNames[ctx.getRuleIndex()]
-
-        if rule_name == "program":
-            return
-
-        formatted_text = " ".join(ctx.getText().replace("{", " { ").replace("}", " } ").split())
-
-        print(f"Exiting {rule_name}: {formatted_text}")
 
 def main(code):
     # Lê o código fonte
@@ -63,15 +46,9 @@ def main(code):
 
     print("Análise sintática realizada com sucesso!")
 
-    # # Caminha pela árvore com um listener para imprimir os detalhes da AST
-    # print("\nIniciando a impressão da Árvore de Sintaxe Abstrata (AST):")
-    # walker = ParseTreeWalker()
-    # printer = ASTPrinter()
-    # walker.walk(printer, tree)
-
-    # Exibe a árvore gerada (raw format)
-    print("\n2ª etapa: AST Tree (Raw):")
-    print(tree.toStringTree(recog=parser))
+    # Exibe a árvore gerada (detalhada)
+    print("\n2ª etapa: AST Tree (Detalhada):")
+    print(format_ast(tree, parser))
 
     # Inicia a análise semântica
     print("\nIniciando a análise semântica...")
