@@ -1,0 +1,5 @@
+Program Teste {
+    int x;
+    x = 5;
+}
+
