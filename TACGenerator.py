@@ -1,15 +1,23 @@
 from LPMSVisitor import LPMSVisitor
 from LPMSParser import LPMSParser
+from antlr4.tree.Tree import TerminalNode
 
 class TACGenerator(LPMSVisitor):
     def __init__(self):
         self.temp_count = 0  # Contador de variáveis temporárias
+        self.label_count = 0  # Contador de rótulos para controle de fluxo
         self.tac_instructions = []  # Lista de instruções TAC
+        self.errors = []  # Lista para armazenar erros
 
     def new_temp(self):
         """ Cria uma nova variável temporária """
         self.temp_count += 1
         return f"t{self.temp_count}"
+
+    def new_label(self):
+        """ Cria um novo rótulo para controle de fluxo """
+        self.label_count += 1
+        return f"L{self.label_count}"
 
     def emit(self, result, op1, operator=None, op2=None):
         """ Gera uma instrução de código de três endereços """
@@ -46,24 +54,34 @@ class TACGenerator(LPMSVisitor):
             op1 = temp_var
         return op1
 
-    def visitDeclaration(self, ctx: LPMSParser.DeclarationContext):
-        var_type = ctx.getChild(0).getText()  # Obtém o tipo da variável (int, float, etc.)
-        var_list = ctx.IDENTIFIER()
-        assign_index = ctx.getChildCount() - 3  # Verifica se há atribuição
+    def visitIfStmt(self, ctx):
+        condition_temp = self.visit(ctx.expression())
 
+        label_then = self.new_label()
+        label_else = self.new_label()
+        label_end = self.new_label()
+
+        # Gerar a instrução de salto condicional
+        self.tac_instructions.append(f"if {condition_temp} goto {label_then}")
+        self.tac_instructions.append(f"goto {label_else}")
+
+        # Bloco do 'then'
+        self.tac_instructions.append(f"{label_then}:")
+        self.visit(ctx.block(0))  # Visitando o bloco do 'if'
+        self.tac_instructions.append(f"goto {label_end}")
+
+        # Bloco do 'else', se houver
+        if ctx.ELSE():
+            self.tac_instructions.append(f"{label_else}:")
+            self.visit(ctx.block(1))  # Visitando o bloco do 'else'
+
+        self.tac_instructions.append(f"{label_end}:")
+
+    def visitDeclaration(self, ctx: LPMSParser.DeclarationContext):
+        var_list = ctx.IDENTIFIER()
         for var in var_list:
             var_name = var.getText()
-
-            # Caso a variável seja declarada com uma atribuição
-            if "=" in ctx.getText():
-                for i in range(1, ctx.getChildCount()):
-                    if ctx.getChild(i).getText() == "=":
-                        assigned_expr = ctx.getChild(i + 1)
-                        if assigned_expr:
-                            assigned_temp = self.visit(assigned_expr)
-                            self.emit(var_name, assigned_temp)
-            else:
-                self.emit(var_name, "0")  # Inicializa como 0 se não for atribuído valor
+            self.emit(var_name, "0")  # Inicializa como 0 se não for atribuído valor
 
     def visitFactor(self, ctx: LPMSParser.FactorContext):
         """ Trata fatores, incluindo identificadores, números e expressões entre parênteses """
@@ -74,6 +92,32 @@ class TACGenerator(LPMSVisitor):
         elif ctx.LPAREN():
             return self.visit(ctx.expression())  # Resolvendo expressões entre parênteses
         return None
+
+    def visitPrintStmt(self, ctx):
+        args = ctx.expression()
+
+        if not args or len(args) == 0:
+            self.tac_instructions.append("Erro: Nenhum argumento válido para print")
+            return
+
+        arg_list = []
+        for arg in args:
+            # Verificar se o argumento é uma string literal verificando o texto diretamente
+            if arg.getText().startswith('"') and arg.getText().endswith('"'):
+                arg_list.append(arg.getText())  # Adiciona a string completa com aspas
+            else:
+                # Trata os outros argumentos normalmente (variáveis ou expressões)
+                result = self.visit(arg)
+                if result:
+                    arg_list.append(result)
+                else:
+                    self.tac_instructions.append("Erro: Argumento inválido para print")
+
+        if len(arg_list) > 0:
+            print_str = ", ".join(arg_list)
+            self.tac_instructions.append(f"print {print_str}")
+        else:
+            self.tac_instructions.append("Erro: Nenhum argumento válido para print")
 
     def generate_TAC(self, tree):
         """ Gera código de três endereços visitando a árvore sintática """
