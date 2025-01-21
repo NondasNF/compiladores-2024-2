@@ -119,6 +119,21 @@ class TACGenerator(LPMSVisitor):
         else:
             self.tac_instructions.append("Erro: Nenhum argumento válido para print")
 
+    def visitWhileStmt(self, ctx):
+        start_label = self.new_label()
+        end_label = self.new_label()
+
+        self.tac_instructions.append(f"{start_label}:")
+
+        condition_temp = self.visit(ctx.expression())
+        self.tac_instructions.append(f"if {condition_temp} goto {end_label}")
+
+        self.visit(ctx.block())
+
+        self.tac_instructions.append(f"goto {start_label}")
+
+        self.tac_instructions.append(f"{end_label}:")
+
     def generate_TAC(self, tree):
         """ Gera código de três endereços visitando a árvore sintática """
         self.visit(tree)
