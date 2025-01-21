@@ -120,18 +120,28 @@ class TACGenerator(LPMSVisitor):
             self.tac_instructions.append("Erro: Nenhum argumento válido para print")
 
     def visitWhileStmt(self, ctx):
-        start_label = self.new_label()
-        end_label = self.new_label()
+        start_label = self.new_label()  # Rótulo para início do loop
+        end_label = self.new_label()  # Rótulo para sair do loop
 
+        # Marca o início do loop
         self.tac_instructions.append(f"{start_label}:")
 
+        # Avaliação da condição
         condition_temp = self.visit(ctx.expression())
         self.tac_instructions.append(f"if {condition_temp} goto {end_label}")
 
-        self.visit(ctx.block())
+        # Corpo do loop
+        for stmt in ctx.block().stmt():
+            # Verifica se o nó contém o token BREAK
+            if stmt.getChildCount() > 0 and stmt.getChild(0).getText() == "break":
+                self.tac_instructions.append(f"goto {end_label}")  # Adiciona break para sair do loop
+            else:
+                self.visit(stmt)
 
+        # Retorno ao início do loop
         self.tac_instructions.append(f"goto {start_label}")
 
+        # Rótulo de saída do loop
         self.tac_instructions.append(f"{end_label}:")
 
     def generate_TAC(self, tree):
