@@ -144,6 +144,11 @@ class TACGenerator(LPMSVisitor):
         # Rótulo de saída do loop
         self.tac_instructions.append(f"{end_label}:")
 
+    def visitInputStmt(self, ctx):
+        # Itera sobre todas as variáveis na entrada
+        for var in ctx.IDENTIFIER():
+            var_name = var.getText()
+            self.tac_instructions.append(f"input {var_name}")
     def generate_TAC(self, tree):
         """ Gera código de três endereços visitando a árvore sintática """
         self.visit(tree)
