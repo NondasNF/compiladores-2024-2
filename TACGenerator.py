@@ -100,24 +100,37 @@ class TACGenerator(LPMSVisitor):
             self.tac_instructions.append("Erro: Nenhum argumento válido para print")
             return
 
-        arg_list = []
+        arg_count = 0
+
         for arg in args:
-            # Verificar se o argumento é uma string literal verificando o texto diretamente
-            if arg.getText().startswith('"') and arg.getText().endswith('"'):
-                arg_list.append(arg.getText())  # Adiciona a string completa com aspas
+            # Encontrar o nó terminal correto (STRING_LITERAL)
+            terminal_node = self.find_terminal_node(arg)
+
+            if terminal_node and terminal_node.getSymbol().type == LPMSParser.STRING_LITERAL:
+                arg_value = terminal_node.getText()  # Obtém o valor da string
+                self.tac_instructions.append(f'param {arg_value}')
             else:
                 # Trata os outros argumentos normalmente (variáveis ou expressões)
                 result = self.visit(arg)
                 if result:
-                    arg_list.append(result)
+                    self.tac_instructions.append(f'param {result}')
                 else:
                     self.tac_instructions.append("Erro: Argumento inválido para print")
 
-        if len(arg_list) > 0:
-            print_str = ", ".join(arg_list)
-            self.tac_instructions.append(f"print {print_str}")
-        else:
-            self.tac_instructions.append("Erro: Nenhum argumento válido para print")
+            arg_count += 1
+
+        # Adiciona chamada para a função print com o número correto de argumentos
+        self.tac_instructions.append(f"call print {arg_count}")
+
+    def find_terminal_node(self, ctx):
+        """ Percorre recursivamente a árvore até encontrar um nó terminal """
+        if isinstance(ctx, TerminalNode):
+            return ctx
+        for i in range(ctx.getChildCount()):
+            result = self.find_terminal_node(ctx.getChild(i))
+            if result:
+                return result
+        return None
 
     def visitWhileStmt(self, ctx):
         start_label = self.new_label()  # Rótulo para início do loop
@@ -145,10 +158,21 @@ class TACGenerator(LPMSVisitor):
         self.tac_instructions.append(f"{end_label}:")
 
     def visitInputStmt(self, ctx):
-        # Itera sobre todas as variáveis na entrada
-        for var in ctx.IDENTIFIER():
+        variables = ctx.IDENTIFIER()
+
+        if not variables or len(variables) == 0:
+            self.tac_instructions.append("Erro: Nenhuma variável válida para input")
+            return
+
+        arg_count = 0
+        for var in variables:
             var_name = var.getText()
-            self.tac_instructions.append(f"input {var_name}")
+            self.tac_instructions.append(f"param {var_name}")
+            arg_count += 1
+
+        # Gera chamada para a função input com o número de variáveis passadas
+        self.tac_instructions.append(f"call input {arg_count}")
+
     def generate_TAC(self, tree):
         """ Gera código de três endereços visitando a árvore sintática """
         self.visit(tree)
