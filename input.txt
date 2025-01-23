@@ -1,43 +1,9 @@
 Program TesteCompleto {
-    // Declaração de variáveis
     int x, y, z;
-    float a = 3.14, b;
-    str texto = "Hello, World!";
-    bool flag = true;
+    x = 0;
+    print("The value is: ", x);
+    print(y, x);
+    print(y, z, x);
+    print("1", "2", "3");
 
-    // Atribuições válidas
-    x = 10;
-    y = 20;
-    z = x + y;
-    b = 2.71;
-
-    // Atribuições inválidas (deve gerar erro)
-    // x = "string"; // Não pode atribuir string a int
-    // texto = 42; // Não pode atribuir número a string
-    // flag = 100; // Não pode atribuir int a bool
-
-
-    // Estrutura condicional
-    if (x > y) {
-        print("x é maior que y");
-    } else {
-        print("y é maior ou igual a x");
-    }
-
-    // Laço de repetição
-    while (x > 0) {
-        print("Valor de x:", x);
-        x = x - 1;
-    }
-
-    // Entrada do usuário
-    input(y);
-
-    // Impressão de resultados
-    print("Resultado final:", y, "Flag:", flag, "Texto:", texto);
-
-    // Declaração de constantes
-    const constante = 42;
-    print("Constante:", constante);
-    //constante = 50; // Não pode alterar o valor de uma constante
 }

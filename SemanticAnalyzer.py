@@ -139,10 +139,27 @@ class SemanticAnalyzer(LPMSVisitor):
             self.symbol_table[self.current_scope()][var_name] = {"type": var_type}
 
     def determine_expression_type(self, expression_ctx):
-        """ Determina o tipo de uma expressão baseado na AST """
-        if expression_ctx.term():
+        """ Determina o tipo de uma expressão baseada na AST """
+        if len(expression_ctx.term()) == 1:
             return self.determine_term_type(expression_ctx.term(0))
-        return "undefined"
+
+        # Se houver mais de um termo, verifica operações
+        left_type = self.determine_term_type(expression_ctx.term(0))
+        for i in range(1, len(expression_ctx.term())):
+            operator = expression_ctx.getChild(2 * i - 1).getText()  # Obtém o operador (+, -, *, /)
+            right_type = self.determine_term_type(expression_ctx.term(i))
+
+            # Verifica se os tipos são compatíveis
+            if left_type != right_type:
+                self.errors.append(
+                    f"Erro semântico: Operação inválida entre tipos '{left_type}' e '{right_type}'."
+                )
+                return "undefined"
+
+            # Assume que o resultado da expressão segue o tipo dos operandos (ex: int + int = int)
+            left_type = right_type
+
+        return left_type
 
     def determine_term_type(self, term_ctx):
         """ Determina o tipo de um termo """
