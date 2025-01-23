@@ -29,19 +29,43 @@ class TACGenerator(LPMSVisitor):
 
     def visitAssignment(self, ctx: LPMSParser.AssignmentContext):
         var_name = ctx.IDENTIFIER().getText()
-        expr_temp = self.visit(ctx.expression())
-        self.emit(var_name, expr_temp)
+        assigned_expr = ctx.expression()
+
+        assigned_value = self.visit(assigned_expr)
+        if assigned_value is None:
+            assigned_value = assigned_expr.getText()  # Obtém o valor bruto
+
+        self.emit(var_name, assigned_value)
 
     def visitExpression(self, ctx: LPMSParser.ExpressionContext):
-        """ Gera código para expressão aritmética respeitando a precedência """
+        """ Gera código para expressão aritmética ou valores literais corretamente """
+        if ctx.getChildCount() == 1:
+            return self.visit(ctx.term(0))
+
         op1 = self.visit(ctx.term(0))
         for i in range(1, len(ctx.term())):
-            operator = ctx.getChild(2 * i - 1).getText()  # Captura operadores + ou -
+            operator = ctx.getChild(2 * i - 1).getText()
             op2 = self.visit(ctx.term(i))
+
+            if op1 is None or op2 is None:
+                return None
+
             temp_var = self.new_temp()
             self.emit(temp_var, op1, operator, op2)
             op1 = temp_var
+
         return op1
+
+    def visitFactor(self, ctx: LPMSParser.FactorContext):
+        if ctx.IDENTIFIER():
+            return ctx.IDENTIFIER().getText()
+        elif ctx.NUMBER():
+            return ctx.NUMBER().getText()
+        elif ctx.STRING_LITERAL():
+            return ctx.STRING_LITERAL().getText()  # Retorna o valor da string com aspas
+        elif ctx.LPAREN():
+            return self.visit(ctx.expression())  # Resolvendo expressões entre parênteses
+        return None
 
     def visitTerm(self, ctx: LPMSParser.TermContext):
         """ Gera código para termos respeitando a precedência de * e / """
@@ -78,17 +102,48 @@ class TACGenerator(LPMSVisitor):
         self.tac_instructions.append(f"{label_end}:")
 
     def visitDeclaration(self, ctx: LPMSParser.DeclarationContext):
+        var_type = ctx.getChild(0).getText()  # Obtém o tipo da variável (ex: int, str, float)
         var_list = ctx.IDENTIFIER()
-        for var in var_list:
+
+        for i, var in enumerate(var_list):
             var_name = var.getText()
-            self.emit(var_name, "0")  # Inicializa como 0 se não for atribuído valor
+
+            if var_type == "int" or var_type == "float":
+                default_value = "0"
+            elif var_type == "str":
+                default_value = '""'
+            elif var_type == "bool":
+                default_value = "false"
+            else:
+                default_value = "0"
+
+            ctx_var_index = 0
+            for index_c, child in enumerate(ctx.children):
+                if child.getText() == var_name:
+                    ctx_var_index = index_c
+                    break
+            if ctx_var_index < ctx.getChildCount() and ctx.getChild(ctx_var_index + 1).getText() == "=":
+                assigned_expr = ctx.getChild(ctx_var_index + 2)
+
+                # Utiliza a função para encontrar o valor correto
+                terminal_node = self.find_terminal_node(assigned_expr)
+                if terminal_node and terminal_node.getSymbol().type == LPMSParser.STRING_LITERAL:
+                    assigned_value = terminal_node.getText()
+                else:
+                    assigned_value = self.visit(assigned_expr)
+
+                self.emit(var_name, assigned_value)
+            else:
+                self.emit(var_name, default_value)
 
     def visitFactor(self, ctx: LPMSParser.FactorContext):
-        """ Trata fatores, incluindo identificadores, números e expressões entre parênteses """
+        """ Trata fatores, incluindo identificadores, números e strings """
         if ctx.IDENTIFIER():
             return ctx.IDENTIFIER().getText()
         elif ctx.NUMBER():
             return ctx.NUMBER().getText()
+        elif ctx.STRING_LITERAL():
+            return ctx.STRING_LITERAL().getText()  # Retorna o valor da string com aspas
         elif ctx.LPAREN():
             return self.visit(ctx.expression())  # Resolvendo expressões entre parênteses
         return None
@@ -145,9 +200,8 @@ class TACGenerator(LPMSVisitor):
 
         # Corpo do loop
         for stmt in ctx.block().stmt():
-            # Verifica se o nó contém o token BREAK
             if stmt.getChildCount() > 0 and stmt.getChild(0).getText() == "break":
-                self.tac_instructions.append(f"goto {end_label}")  # Adiciona break para sair do loop
+                self.tac_instructions.append(f"goto {end_label}")
             else:
                 self.visit(stmt)
 
